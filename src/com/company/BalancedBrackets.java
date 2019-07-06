@@ -30,16 +30,45 @@ public class BalancedBrackets {
         for(int i = 0; i < counter; i++){
 
             System.out.print("Please enter string to test: ");
-            String bracketsToTest = scanner.nextLine();
+            String bracketsToTest = scanner.next();
             // loop through the bracketsToTest string one character at a time and since
             // it should be balanced the first half of the string (which should be opening brackets)
             // will be placed in a stack while the
             // other part will be tested if they are the closing brackets
+            Stack<Character> characterStack = new Stack<>();
+            String isBal = "YES";
             for(int j = 0; j < bracketsToTest.length(); j++){
-                Stack<Character> characterStack = new Stack<>();
-
                 Character currentChar = bracketsToTest.charAt(j);
+                if(currentChar =='(' || currentChar =='[' || currentChar == '{'){
+                    characterStack.push(currentChar);
+                } else { // we are in the second half of the string if it is likely to be a balanced bracket
+                   if(!characterStack.empty()){ // check since we will be poping chars from stack
+
+                       Character openingChar = characterStack.pop();
+                       if(openingChar=='(' && currentChar!=')'){
+                           isBal = "NO";
+                           break;
+                       }
+                       if(openingChar=='[' && currentChar!=']'){
+                           isBal = "NO";
+                           break;
+                       }
+                       if(openingChar=='{' && currentChar!='}'){
+                           isBal = "NO";
+                           break;
+                       }
+                       if(characterStack.isEmpty() && j+1< bracketsToTest.length()){ // if the stack is empty and there are
+                           // still more characters in the bracketsToTest string then that means it is no longer a balanced
+                           // bracket
+                           isBal = "NO";
+                           break;
+                       }
+
+                   }
+                }
             }
+
+                System.out.println(isBal); // isBal is still YES
         }
     }
 }
